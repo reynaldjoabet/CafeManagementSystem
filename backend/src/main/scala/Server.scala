@@ -1,5 +1,11 @@
+import Routes.Routes
 import cats.effect.{ExitCode, IO, IOApp}
+import org.http4s.ember.server.EmberServerBuilder
 object Server extends  IOApp{
   override def run(args: List[String]): IO[ExitCode] =
-    IO.delay(println("hello dude")).as(ExitCode.Success)
+    EmberServerBuilder.default[IO]
+      .withHttpApp(Routes.routes)
+      .build
+      .use(_=>IO.never)
+      .as(ExitCode.Success)
 }
